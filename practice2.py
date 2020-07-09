@@ -6,6 +6,12 @@ import shutil
 import os
 import time
 
+file_path = 'file2.txt'
+try:
+    fp = open(file_path)
+except IOError:
+    # If not exists, create the file
+    fp = open(file_path, 'w+')
 _stored = dict()
 def is_modified(name):
     with open(name) as f:
@@ -22,7 +28,7 @@ def is_modified(name):
 def send():
     intered_text = tk_object_text.get("1.0", "end")
     f = open('file1.txt', 'w')
-    f1 = open("file_history1", 'a')
+    f1 = open("file_history1.txt", 'a')
     try:
         f1.write(intered_text)
         f.write(intered_text)
@@ -32,12 +38,10 @@ def send():
 
 
 def change_file():
-    if is_modified("file1.txt"):
-        x = open('file1.txt', 'r')
+    if is_modified("file2.txt"):
+        x = open('file2.txt', 'r')
         x = x.read()
         txt.insert("1.0", x)
-
-
 tk = Tk()
 
 def change_loop():
@@ -122,13 +126,6 @@ def extract_text():
         f.close()
     except FileNotFoundError:
         mb.showinfo("Внимание", "Файл не сохранён")
-
-
-def delete_text():
-    answer = mb.askyesno("Подтверждение", message="Вы хотите удалить текст?")
-    if answer == True:
-        text.delete(0.0, END)
-
 
 def exit():
     sys.exit()
@@ -231,6 +228,5 @@ filemenu.add_command(label="Выход", command=exit)
 mainmenu.add_cascade(label="Файл", menu=filemenu)
 mainmenu.add_cascade(label="Тема", command=th)
 menu = Menu(tearoff=0)
-menu.add_command(label="Очистить", command=delete_text)
-tk_object_text.bind("<Button-3>", lambda event: menu.post(event.x_root, event.y_root))
+
 tk.mainloop()
